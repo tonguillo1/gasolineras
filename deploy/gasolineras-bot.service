@@ -1,0 +1,30 @@
+[Unit]
+Description=Bot de Telegram de gasolineras baratas
+Documentation=https://github.com/tonguillo1/gasolineras
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gasolineras
+Group=gasolineras
+WorkingDirectory=/opt/gasolineras
+EnvironmentFile=/etc/gasolineras.env
+Environment=GASOLINERAS_CACHE=/var/lib/gasolineras
+ExecStart=/opt/gasolineras/.venv/bin/python /opt/gasolineras/bot.py
+Restart=always
+RestartSec=15
+
+# El bot solo necesita salir a Internet y escribir su cache.
+StateDirectory=gasolineras
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6
+MemoryMax=400M
+
+[Install]
+WantedBy=multi-user.target
